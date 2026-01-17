@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
 #include <SDL2/SDL.h>
 
 int main() {
@@ -23,7 +21,8 @@ int main() {
     int height = -1;
     sscanf(line, "%d %d", &width, &height);
 
-    // Read max color value (skip comments)
+    // Read max color value (skip comments).
+    // line is consumed but ignored since we assume it's 255.
     do {
         fgets(line, sizeof(line), in);
     } while (line[0] == '#');
@@ -47,10 +46,10 @@ int main() {
         return 1;
     }
 
-    // Get the window surface
+    // Get the window surface --> retrieve CPU accessible pixel buffer for the window
         SDL_Surface *psurface = SDL_GetWindowSurface(pwindow);
 
-    // Lock the surface if needed
+    // Lock the surface if needed (some pixel formats require locking before access)
     if (SDL_MUSTLOCK(psurface)) {
         SDL_LockSurface(psurface);
     }
